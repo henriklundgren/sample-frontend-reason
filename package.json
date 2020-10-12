@@ -8,7 +8,7 @@
   "scripts": {
     "start": "next",
     "dev:reason": "bsb -clean-world -make-world -w",
-    "build": "next build && next export -o dist",
+    "build": "env NODE_ENV=production next build && next export -o dist",
     "deploy": "npm run build && touch dist/.nojekyll && gh-pages -t true -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
