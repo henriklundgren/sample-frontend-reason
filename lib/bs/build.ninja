@@ -1,0 +1,50 @@
+g_pkg_flg = -bs-package-name with-reasonml
+src_root_dir = /home/henrik/Projects/sample-frontend-react-reasonml
+bsc = /home/henrik/Projects/sample-frontend-react-reasonml/node_modules/bs-platform/linux/bsc.exe
+bsdep = /home/henrik/Projects/sample-frontend-react-reasonml/node_modules/bs-platform/linux/bsb_helper.exe
+warnings = 
+bsc_flags = -bs-super-errors
+ppx_flags = 
+g_dpkg_incls = 
+g_ns = 
+g_lib_incls = -I components -I pages -I bindings -I /home/henrik/Projects/sample-frontend-react-reasonml/node_modules/reason-react/lib/ocaml -I /home/henrik/Projects/sample-frontend-react-reasonml/node_modules/@jsiebern/bs-material-ui/lib/ocaml
+rule build_ast_from_re
+  command = $bsc  $warnings -bs-jsx 3 $bsc_flags -o $out -bs-syntax-only -bs-binary-ast $in
+  description = [34mBuilding[39m [2m${out}[22m
+build  bindings/Next.reast : build_ast_from_re $src_root_dir/bindings/Next.re
+rule mk_deps
+  command = $bsdep -hash 11c02ff3a783898bbec2e47cf5044943 $g_ns $in
+  restat = 1
+  description = [34mBuilding[39m [2m${out}[22m
+build  bindings/Next.d : mk_deps bindings/Next.reast
+rule ml_cmj_cmi
+  command = $bsc $g_pkg_flg -bs-suffix $g_lib_incls $warnings $bsc_flags -o $out $in
+  dyndep = $in_e.d
+  restat = 1
+  description = [34mBuilding[39m [2m${out}[22m
+build  bindings/Next.cmj |  bindings/Next.cmi $src_root_dir/bindings/Next.bs.js : ml_cmj_cmi bindings/Next.reast ||  bindings/Next.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:bindings
+build  pages/index.reast : build_ast_from_re $src_root_dir/pages/index.re
+build  pages/index.d : mk_deps pages/index.reast
+build  pages/index.cmj |  pages/index.cmi $src_root_dir/pages/index.bs.js : ml_cmj_cmi pages/index.reast ||  pages/index.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:pages
+build  components/MyType.reast : build_ast_from_re $src_root_dir/components/MyType.re
+build  components/MyType.d : mk_deps components/MyType.reast
+build  components/MyType.cmj |  components/MyType.cmi $src_root_dir/components/MyType.bs.js : ml_cmj_cmi components/MyType.reast ||  components/MyType.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:components
+build  components/Content.reast : build_ast_from_re $src_root_dir/components/Content.re
+build  components/Content.d : mk_deps components/Content.reast
+build  components/Content.cmj |  components/Content.cmi $src_root_dir/components/Content.bs.js : ml_cmj_cmi components/Content.reast ||  components/Content.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:components
+build  components/Sidebar.reast : build_ast_from_re $src_root_dir/components/Sidebar.re
+build  components/Sidebar.d : mk_deps components/Sidebar.reast
+build  components/Sidebar.cmj |  components/Sidebar.cmi $src_root_dir/components/Sidebar.bs.js : ml_cmj_cmi components/Sidebar.reast ||  components/Sidebar.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:components
+build  components/CurrencyTools.reast : build_ast_from_re $src_root_dir/components/CurrencyTools.re
+build  components/CurrencyTools.d : mk_deps components/CurrencyTools.reast
+build  components/CurrencyTools.cmj |  components/CurrencyTools.cmi $src_root_dir/components/CurrencyTools.bs.js : ml_cmj_cmi components/CurrencyTools.reast ||  components/CurrencyTools.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:components
+build  components/InvoicesTable.reast : build_ast_from_re $src_root_dir/components/InvoicesTable.re
+build  components/InvoicesTable.d : mk_deps components/InvoicesTable.reast
+build  components/InvoicesTable.cmj |  components/InvoicesTable.cmi $src_root_dir/components/InvoicesTable.bs.js : ml_cmj_cmi components/InvoicesTable.reast ||  components/InvoicesTable.d
+  g_pkg_flg = $g_pkg_flg  -bs-package-output es6:components
